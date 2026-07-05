@@ -10,6 +10,9 @@ build/
 dist/
 *.manifest
 
+# Inno Setup installer output
+installer/
+
 # App-generated output folders (created next to processed PDFs)
 /CSV/
 /Markdown/

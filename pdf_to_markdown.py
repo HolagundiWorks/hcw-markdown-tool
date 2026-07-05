@@ -653,6 +653,8 @@ class App(tb.Window):
         self.md_btn.pack(side="left", padx=(8, 0))
         self.csv_btn = tb.Button(actions, text="Export CSV", command=self.start_csv, bootstyle="success", width=14, state="disabled")
         self.csv_btn.pack(side="left", padx=(8, 0))
+        self.reset_btn = tb.Button(actions, text="Reset", command=self.reset_all, bootstyle="danger-outline", width=10)
+        self.reset_btn.pack(side="right")
         tb.Label(actions, textvariable=self.detected, bootstyle="secondary").pack(side="left", padx=14)
 
         # Preview
@@ -719,6 +721,26 @@ class App(tb.Window):
         self.files.clear()
         self._files_changed()
 
+    def reset_all(self):
+        """Return the app to its just-launched state: clear files, restore every
+        option to its default, and wipe the preview, status, and progress bar."""
+        if self._busy():
+            return
+        self.clear_files()          # also clears analyses + OCR cache, disables CSV
+        self.out_dir.set("")
+        self.page_spec.set("")
+        self.parity.set("All pages")
+        self.extract_images.set(False)
+        self.flatten.set(True)
+        self.combine.set(True)
+        self.ocr.set(False)
+        self._set_preview("")
+        self.progress.stop()
+        self.progress.configure(mode="determinate", value=0, maximum=100)
+        self.percent.set("")
+        self.detected.set("Not analyzed yet — click Analyze.")
+        self.status.set("Ready. Add PDF files to begin.")
+
     def choose_out_dir(self):
         d = filedialog.askdirectory(title="Choose output folder")
         if d:
@@ -779,7 +801,7 @@ class App(tb.Window):
         if not self.files:
             messagebox.showinfo(APP_TITLE, "Add at least one PDF file first.")
             return
-        for b in (self.analyze_btn, self.md_btn, self.csv_btn):
+        for b in (self.analyze_btn, self.md_btn, self.csv_btn, self.reset_btn):
             b.configure(state="disabled")
 
         self.progress.configure(mode="determinate", value=0, maximum=100)
@@ -933,7 +955,7 @@ class App(tb.Window):
                     self.progress.stop()
                     self.progress.configure(mode="determinate", value=0)
                     self.percent.set("")
-                    for b in (self.analyze_btn, self.md_btn):
+                    for b in (self.analyze_btn, self.md_btn, self.reset_btn):
                         b.configure(state="normal")
                     if any(a["has_tables"] for a in self.analyses.values()):
                         self.csv_btn.configure(state="normal")

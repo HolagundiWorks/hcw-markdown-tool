@@ -24,13 +24,20 @@ page-by-page progress.
 
 ## Running it
 
-### Option A — Portable app (no Python needed)
+### Option A — Windows installer (recommended)
+
+Run **`installer\HCW-Markdown-Tool-Setup-1.0.0.exe`**. It installs the app,
+creates Start Menu (and optional desktop) shortcuts, and registers an
+uninstaller under *Apps & features*. You can install for all users or just
+yourself.
+
+### Option B — Portable app (no install, no Python needed)
 
 Double-click **`dist\HCW Markdown Tool.exe`**. It's a single self-contained file
 (~104 MB) that bundles Python and every dependency — copy it anywhere and run.
 (First launch is a few seconds slower while it unpacks.)
 
-### Option B — From source
+### Option C — From source
 
 Double-click **`Run PDF to Markdown.bat`**, or from a terminal:
 
@@ -51,6 +58,18 @@ Double-click **`build_exe.bat`** (uses PyInstaller). Output lands in
 `dist\HCW Markdown Tool.exe`. The build excludes heavy unused libraries (torch,
 OpenCV, pandas, …) to keep the file small.
 
+## Building the Windows installer
+
+After building the .exe, double-click **`build_installer.bat`** (uses
+[Inno Setup 6](https://jrsoftware.org/isdl.php)). Output lands in
+`installer\HCW-Markdown-Tool-Setup-1.0.0.exe`. If Inno Setup isn't installed:
+
+```
+winget install JRSoftware.InnoSetup
+```
+
+The installer layout lives in `installer.iss` (app name, version, shortcuts).
+
 ## Features
 
 - **Analyze** — classifies each PDF as *text*, *table*, or *mixed*, and detects
@@ -68,6 +87,9 @@ OpenCV, pandas, …) to keep the file small.
   Preview / Analysis pane reflects both toggles live so you see the result
   before exporting.
 - **Batch** — add and process many PDFs at once.
+- **Reset** — one click returns the app to its just-launched state: clears the
+  file list, restores every option to its default, and wipes the preview,
+  status, and progress bar.
 - **Page ranges** — e.g. `1-5, 8, 10-12` (leave blank for all pages).
 - **Odd / even pages** — the *Include* selector filters pages (All / Odd / Even)
   and combines with the range, e.g. `1-10` + *Odd* → pages 1, 3, 5, 7, 9.
@@ -111,6 +133,8 @@ tables, `C:\Docs\CSV\foo.csv`.
 | `pdf_to_markdown.py` | Source code |
 | `tessdata\eng.traineddata` | OCR language data (English) — needed for OCR |
 | `build_exe.bat` | Rebuild the portable .exe |
+| `installer.iss` | Inno Setup script for the Windows installer |
+| `build_installer.bat` | Build the Windows installer (needs Inno Setup) |
 | `Run PDF to Markdown.bat` | Run from source (dev) |
 | `requirements.txt` | Python dependencies |
 
