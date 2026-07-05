@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# PyInstaller build artifacts
+build/
+dist/
+*.manifest
+
+# App-generated output folders (created next to processed PDFs)
+/CSV/
+/Markdown/
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.idea/
+.vscode/

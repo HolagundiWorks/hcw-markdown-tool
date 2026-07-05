@@ -1,0 +1,4 @@
+pymupdf4llm>=1.28
+pymupdf>=1.28
+ttkbootstrap>=1.10
+pyinstaller>=6.0
